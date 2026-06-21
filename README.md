@@ -1,2 +1,264 @@
 # simple-hacks-hub-
 It helps people to solve simple problems in their homes
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frugal Fixes — Life Hacks That Save You Money</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ledger:#1F3D2B;
+    --ledger-dark:#16301F;
+    --paper:#F2E9D8;
+    --paper-dim:#E7DCC4;
+    --stamp:#B23A2E;
+    --ink:#23262B;
+    --brass:#C9A14A;
+    --sage:#7C9070;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ledger);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 36px);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:28px 20px 80px;}
+
+  /* HEADER */
+  header{
+    display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between;
+    gap:18px; margin-bottom:30px;
+  }
+  .title-block{color:var(--paper);}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.18em;
+    color:var(--brass); text-transform:uppercase; margin:0 0 8px;
+  }
+  h1{
+    font-family:'Special Elite', monospace; font-size:clamp(34px,6vw,56px);
+    margin:0; line-height:1; color:var(--paper); letter-spacing:.5px;
+    text-shadow:2px 2px 0 rgba(0,0,0,0.25);
+  }
+  .sub{font-size:14.5px; color:var(--sage); margin:10px 0 0; max-width:440px; line-height:1.5;}
+
+  .stamp{
+    flex-shrink:0; width:108px; height:108px; border-radius:50%;
+    border:3px solid var(--stamp); color:var(--stamp);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    transform:rotate(-9deg);
+    font-family:'Special Elite', monospace; font-size:13px; line-height:1.25;
+    text-transform:uppercase; letter-spacing:.04em;
+    background:rgba(178,58,46,0.04);
+    padding:6px;
+  }
+
+  /* CONTROLS */
+  .controls{
+    background:var(--paper); border-radius:3px; padding:18px;
+    box-shadow:0 8px 0 rgba(0,0,0,0.18);
+    margin-bottom:28px;
+  }
+  .search-row{display:flex; gap:10px; align-items:center;}
+  .search-row label{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.12em;
+    color:var(--ledger); text-transform:uppercase; white-space:nowrap;
+  }
+  .search-row input{
+    flex:1; border:none; border-bottom:2px dashed var(--ledger);
+    background:transparent; font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px; padding:6px 4px; color:var(--ink); outline:none;
+  }
+  .search-row input:focus{border-bottom-color:var(--stamp);}
+
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;}
+  .tab{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:.04em;
+    padding:8px 14px; border-radius:2px; cursor:pointer; user-select:none;
+    border:1.5px solid var(--ledger); background:transparent; color:var(--ledger);
+    transition:background .15s, color .15s;
+  }
+  .tab:hover{background:var(--paper-dim);}
+  .tab.active{background:var(--ledger); color:var(--paper);}
+  .tab:focus-visible{outline:3px solid var(--stamp); outline-offset:2px;}
+
+  .count-line{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--paper);
+    opacity:.75; margin:0 0 16px;
+  }
+
+  /* GRID */
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+    gap:20px;
+  }
+
+  .card{
+    position:relative; background:var(--paper);
+    padding:20px 18px 18px;
+    box-shadow:0 6px 0 rgba(0,0,0,0.18);
+    border-top:6px dashed var(--paper-dim);
+    transition:transform .15s ease;
+  }
+  .card:hover{transform:translateY(-3px);}
+
+  .tag{
+    position:absolute; top:-10px; right:14px;
+    background:var(--brass); color:var(--ledger-dark);
+    font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600;
+    padding:5px 9px; border-radius:2px; letter-spacing:.03em;
+    box-shadow:0 2px 0 rgba(0,0,0,0.2);
+  }
+
+  .cat-label{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--sage); margin:4px 0 8px; display:block;
+  }
+  .card h3{
+    font-family:'Special Elite', monospace; font-size:19px; margin:0 0 8px;
+    color:var(--ledger-dark); line-height:1.25;
+  }
+  .card p{font-size:14px; line-height:1.55; margin:0; color:var(--ink);}
+
+  .empty{
+    color:var(--paper); text-align:center; padding:60px 20px;
+    font-family:'IBM Plex Mono', monospace; opacity:.8;
+  }
+
+  footer{
+    text-align:center; color:var(--sage); font-size:12px;
+    font-family:'IBM Plex Mono', monospace; margin-top:50px; letter-spacing:.04em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <p class="eyebrow">No.001 — Household &amp; Money Almanac</p>
+      <h1>Frugal Fixes</h1>
+      <p class="sub">Field-tested hacks for stretching cash, fixing things yourself, and getting through the week without spending money you don't have.</p>
+    </div>
+    <div class="stamp">100%<br>free<br>advice</div>
+  </header>
+
+  <div class="controls">
+    <div class="search-row">
+      <label for="search">Find&nbsp;a&nbsp;hack</label>
+      <input id="search" type="text" placeholder="try: leftover, rent, stains, wifi…" autocomplete="off">
+    </div>
+    <div class="tabs" id="tabs"></div>
+  </div>
+
+  <p class="count-line" id="countLine"></p>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none;">No hacks match that search. Try a different word, or clear the category filter.</div>
+
+  <footer>Frugal Fixes — written from one broke person to another.</footer>
+</div>
+
+<script>
+const HACKS = [
+  // MONEY
+  {cat:"Money", tag:"$$ saved", title:"Cancel before the trial ends", text:"Set a phone alarm the day a free trial starts, not the day it ends. You'll actually remember to cancel instead of finding the charge a week later."},
+  {cat:"Money", tag:"$ saved", title:"The 24-hour cart rule", text:"Add anything non-essential to your cart, then close the tab. If you still want it in 24 hours, buy it. Most of the time you won't."},
+  {cat:"Money", tag:"$$ saved", title:"Call and just ask for a discount", text:"Phone companies, internet providers, and gyms often have a 'retention' deal they won't offer unless you say you're thinking of cancelling. Ask politely — it works more than you'd think."},
+  {cat:"Money", tag:"$ saved", title:"Round up your spending mentally", text:"When you buy something for $7.40, mentally log it as $8 and round every purchase up. The gap between real and rounded spending becomes a built-in cushion."},
+  {cat:"Money", tag:"$$ saved", title:"Buy generic for anything that dissolves", text:"Medicine, cleaning supplies, and baking ingredients are usually chemically identical to the name brand. Save the brand-name money for things where texture or taste actually matters."},
+  {cat:"Money", tag:"$ saved", title:"Use a separate 'spend' account", text:"Move your fun-money budget into a second account at the start of the month. When that account hits zero, you're done spending — no math required mid-month."},
+  {cat:"Money", tag:"$$ saved", title:"Sell before you forget you own it", text:"Anything unused for 6 months either gets listed for sale this week or donated. Clutter that just sits is money you've already lost twice — once buying it, once storing it."},
+  {cat:"Money", tag:"$ saved", title:"Price-check with a browser extension off", text:"Some retailers raise prices for shoppers using deal-finding extensions. Browse in a private window without extensions, then compare — sometimes the 'no extension' price is lower."},
+  {cat:"Money", tag:"$$ saved", title:"Pay yourself first, even $5", text:"Move a small fixed amount to savings the moment any money arrives, before it touches your main account. Tiny and automatic beats big and occasional."},
+  {cat:"Money", tag:"$ saved", title:"Library card over streaming", text:"Most libraries offer free ebooks, audiobooks, and sometimes movie streaming through apps like Libby or Hoopla. It's the most underused free subscription that already exists in your name."},
+
+  // HOME
+  {cat:"Home", tag:"fix-it", title:"Unclog a drain with two pantry items", text:"Pour baking soda down the drain, follow with vinegar, let it fizz for 10 minutes, then flush with hot water. Skips the $8 bottle of drain cleaner for most simple clogs."},
+  {cat:"Home", tag:"fix-it", title:"Reset a tripped breaker yourself", text:"Before calling an electrician for a dead outlet, check your breaker panel for a switch that's slightly off-center from the rest. Flip it fully off, then back on."},
+  {cat:"Home", tag:"save space", title:"Vertical storage under the sink", text:"A $3 tension rod mounted under the sink lets you hang spray bottles by their trigger, freeing the floor of the cabinet for bins."},
+  {cat:"Home", tag:"no-buy", title:"Make your own glass cleaner", text:"Mix equal parts water and white vinegar with a drop of dish soap in a spray bottle. Cuts streaks just as well as the name-brand stuff for a fraction of the cost."},
+  {cat:"Home", tag:"fix-it", title:"Silence a squeaky door in seconds", text:"Rub a bar of soap, a pencil, or a dab of cooking oil along the hinge pins. No need to remove the door or buy WD-40 for a one-time squeak."},
+  {cat:"Home", tag:"lower bills", title:"Door draft blockers cut heating costs", text:"A rolled towel or a $5 draft stopper under an exterior door keeps warm air from leaking out, which matters more for your heating bill than most people expect."},
+  {cat:"Home", tag:"fix-it", title:"Remove a stripped screw with a rubber band", text:"Lay a wide rubber band over the stripped screw head, then press your screwdriver through it and turn. The rubber grips where the metal can't."},
+  {cat:"Home", tag:"no-buy", title:"Repurpose jars as storage before recycling", text:"Pasta sauce and jam jars make free, airtight storage for dry goods, screws, or leftovers. Soak off the label with hot water and they look intentional."},
+  {cat:"Home", tag:"save space", title:"Use a shower caddy as a fridge organizer", text:"A $4 shower caddy fits perfectly on a fridge shelf and turns loose condiments into one liftable unit, so nothing gets pushed to the back and forgotten until it spoils."},
+  {cat:"Home", tag:"lower bills", title:"Felt pads stop chair noise and floor damage", text:"Stick felt pads on chair and table legs. It's quieter, it protects rented floors from scratches you'd otherwise pay for at move-out, and a pack costs under $5."},
+
+  // DAILY LIFE
+  {cat:"Daily Life", tag:"time saved", title:"Cook once, portion for three days", text:"Double a simple recipe (rice, beans, roasted vegetables) on a slow day and split it into containers. It removes the daily decision of 'what do I eat' that often ends in takeout."},
+  {cat:"Daily Life", tag:"no-buy", title:"Revive stale bread instead of binning it", text:"Run stale bread under water for a second, then bake at 300°F for 8–10 minutes. It comes out close to fresh, instead of becoming food waste you already paid for."},
+  {cat:"Daily Life", tag:"time saved", title:"Lay out tomorrow's outfit tonight", text:"Pick clothes the night before, including socks. It removes a decision point from your morning when you're least equipped to make good ones."},
+  {cat:"Daily Life", tag:"free tool", title:"Use your phone's built-in tools before buying apps", text:"Most phones already have a level, a magnifier, a voice recorder, and a document scanner built into settings or the camera app — no need to download a paid version of any of them."},
+  {cat:"Daily Life", tag:"no-buy", title:"Freeze herbs in oil instead of tossing them", text:"Chop leftover fresh herbs, pack into an ice cube tray, and cover with olive oil. Frozen herb cubes drop straight into a pan and stop herbs from rotting in the fridge unused."},
+  {cat:"Daily Life", tag:"time saved", title:"Keep a running list on your lock screen", text:"A note app widget on your lock screen for 'things to buy' or 'things to do' catches ideas the second you think of them, so you stop relying on memory under stress."},
+  {cat:"Daily Life", tag:"free tool", title:"Free public wifi without the sketchy networks", text:"Libraries, most fast-food chains, and many city parks offer free wifi that doesn't require creating an account, which is safer than unknown open networks at random spots."},
+  {cat:"Daily Life", tag:"no-buy", title:"Make your own electrolyte drink", text:"Mix a pinch of salt, a squeeze of citrus, and a bit of sugar or honey into water. It does what a $3 sports drink does for rehydration, for pennies."},
+  {cat:"Daily Life", tag:"time saved", title:"Batch your errands by location, not by task", text:"Group errands by what's physically near each other rather than by category. You'll spend less on gas and far less of your day driving in circles."},
+  {cat:"Daily Life", tag:"free tool", title:"Screenshot instead of bookmarking", text:"For a quick recipe, address, or confirmation number you'll only need once, a screenshot in your photos app is faster to find later than digging through browser bookmarks."}
+];
+
+const grid = document.getElementById('grid');
+const tabsEl = document.getElementById('tabs');
+const searchEl = document.getElementById('search');
+const countLine = document.getElementById('countLine');
+const emptyEl = document.getElementById('empty');
+
+const categories = ["All", ...Array.from(new Set(HACKS.map(h => h.cat)))];
+let activeCat = "All";
+
+function renderTabs(){
+  tabsEl.innerHTML = "";
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (cat === activeCat ? ' active' : '');
+    btn.textContent = cat;
+    btn.setAttribute('role','button');
+    btn.addEventListener('click', () => { activeCat = cat; renderTabs(); renderGrid(); });
+    tabsEl.appendChild(btn);
+  });
+}
+
+function renderGrid(){
+  const q = searchEl.value.trim().toLowerCase();
+  const filtered = HACKS.filter(h => {
+    const matchesCat = activeCat === "All" || h.cat === activeCat;
+    const matchesQuery = !q || h.title.toLowerCase().includes(q) || h.text.toLowerCase().includes(q) || h.cat.toLowerCase().includes(q);
+    return matchesCat && matchesQuery;
+  });
+
+  grid.innerHTML = "";
+  filtered.forEach(h => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="tag">${h.tag}</div>
+      <span class="cat-label">${h.cat}</span>
+      <h3>${h.title}</h3>
+      <p>${h.text}</p>
+    `;
+    grid.appendChild(card);
+  });
+
+  countLine.textContent = `${filtered.length} hack${filtered.length === 1 ? '' : 's'} on file`;
+  emptyEl.style.display = filtered.length === 0 ? 'block' : 'none';
+}
+
+searchEl.addEventListener('input', renderGrid);
+renderTabs();
+renderGrid();
+</script>
+</body>
+</html>
